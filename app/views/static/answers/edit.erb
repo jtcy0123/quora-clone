@@ -1,0 +1,14 @@
+<h3>Edit Answer</h3>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Question:&ensp;<%= @question.subject %></b></div>
+    <div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br><%= @question.description %></div>
+    </div>
+
+
+<form id='edit_answer' action="/answers/<%= @answer.id %>" method="post">
+  <input id="hidden" type="hidden" name="_method" value="put">
+  Answer: <br>
+  <textarea style="background-color: #f5f5f5" class="btn-block" name='answer[content]' form='edit_answer' rows="5" required><%= @answer.content %></textarea>
+  <input type="submit" value="Edit">
+</form>

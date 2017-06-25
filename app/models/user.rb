@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   # This is Sinatra! Remember to create a migration!
+
   has_many :questions
+  has_many :answers
   # has_many :answers
   has_secure_password
 
@@ -8,6 +10,6 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true, uniqueness: true, :format => { :with => /([^@\s]+)@([\w]+)\.([a-zA-Z]{2,})/, :message => "Invalid email" }
 
-  validates :password, length: { in: 6..10 }
+  validates :password, length: { in: 6..10 }, allow_nil: true
 
 end

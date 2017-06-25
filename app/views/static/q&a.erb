@@ -1,0 +1,36 @@
+<h1>all the answers for this question</h1>
+
+<% def author(u) %>
+  <% if !current_user.nil? && u.id == current_user.id %>
+    <% return "you" %>
+  <% else %>
+    <% return u.first_name.upcase  %>
+  <% end %>
+<% end %>
+
+<% u = User.find(@q.user_id) %>
+<% by = author(u) %>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Q: <%= @q.subject %></b>
+  <div style="text-align: right; font-size: 10px">created on&nbsp;<%= @q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
+  <div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br><%= @q.description %></div>
+  <% if !current_user.nil? %>
+    <a href="/questions/<%= @q.id %>/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a>
+  <% end %>
+</div>
+
+<p>ANSWERS:</p>
+<% if @answers.length == 0 %>
+  <p id="noQmsg" style="text-align: center">This question has no answer yet.</p>
+<% else %>
+  <% @answers.each do |a| %>
+    <% u = User.find(a.user_id) %>
+    <% by = author(u) %>
+    <div class="panel panel-default">
+      <div class="panel-body">A: <b><%= a.content %></b>
+      <div style="text-align: right; font-size: 10px">created on&nbsp;<%= a.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
+      <button id="voteBtn" class="btn btn-info"><i class="fa fa-thumbs-up">&ensp;<%= a.votes %></i></button>
+    </div>
+  <% end %>
+<% end %>
+

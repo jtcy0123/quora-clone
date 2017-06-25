@@ -4,7 +4,8 @@ set :session_secret, "My session secret"
 # get form for new user
 get '/' do
   if logged_in?
-    redirect '/questions/'+ current_user.id.to_s
+    # redirect '/users/'+ current_user.id.to_s + '/questions'
+    erb :"static/profile"
   else
     session[:user_id] = nil
     erb :"static/index"
@@ -59,7 +60,7 @@ get '/users/:id' do
   @user = User.find_by_id(params[:id])
   if @user != nil
     if logged_in? && current_user.id == params[:id].to_i
-      redirect '/questions/'+ current_user.id.to_s
+      redirect '/users/'+ current_user.id.to_s + '/questions'
     elsif logged_in?
       redirect '/users/' + current_user.id.to_s
     else
@@ -70,7 +71,17 @@ get '/users/:id' do
   end
 end
 
-# get a form to edit user
+# update edited user
+patch '/users/:id' do
+  @user = User.find(params[:id])
+  if @user.update_attributes(params[:user])
+    flash[:msg] = "Profile updated successfully"
+    redirect '/profile'
+  else
+    flash[:error] = @user.errors.full_messages.join('. ')
+    erb :'static/profile'
+  end
+end
 
 # log the user out
 delete '/session/:id' do

@@ -1,0 +1,16 @@
+<h1>ANSWER THE QUESTION</h1>
+
+<% u = User.find(@question.user_id) %>
+<p>You are answering this question now:</p>
+<div class="panel panel-default">
+    <div class="panel-heading"><b><%= @question.subject %></b>
+    <div style="text-align: right; font-size: 10px">created on&nbsp;<%= @question.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= u.first_name %></div></div>
+    <div class="panel-body"><%= @question.description %></div>
+</div>
+
+<p><i class="fa fa-user w3-xxlarge"></i>&ensp;<%= current_user.first_name.upcase %></p>
+<form id="ans_question" action="/questions/<%= @question.id %>/answers" method="post">
+  <input type="hidden" name="answer[question_id]" value="<%= @question.id %>">
+  <textarea style="background-color: #f5f5f5" class="btn-block" name="answer[content]" form='ans_question' rows="5" placeholder="Write your answer here" required></textarea>
+  <input type="submit" value="Submit">
+</form>
