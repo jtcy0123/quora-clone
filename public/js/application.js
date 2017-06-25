@@ -35,12 +35,17 @@ $(document).ready(function() {
   
   // for editing names
   $('#edit_name').click(function() {
-    $('#nameform').html('<input type=text placeholder="First Name" name="user[first_name]" required><input type=text placeholder="Last Name" name="user[last_name]" required><input type=submit value="Save">')
+    val1 = $('#fname').text()
+    val2 = $('#lname').text()
+    $('#fullname').hide()
+    $('#nameform').html('First name:<input type=text placeholder="First Name" name="user[first_name]" value="'+val1+'" required><br>Last name:<input type=text placeholder="Last Name" name="user[last_name]" value="'+val2+'" required><input type=submit value="Save">')
   })
 
   // for editing email
   $('#edit_email').click(function() {
-    $('#emailform').html('<input type=text placeholder="Email" name="user[email]" required><input type=submit value="Save">')
+    value = $('#uemail').text()
+    $('#hideemail').hide()
+    $('#emailform').html('<input type=text placeholder="Email" name="user[email]" value="'+value+'" required><input type=submit value="Save">')
   })
 
   // for editing answer
