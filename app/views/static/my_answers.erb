@@ -1,0 +1,33 @@
+<h1>YOU HAVE ANSWERED <%= @answers.length %> QUESTION(S)</h1>
+
+<% if @answers.length == 0 %>
+  <p id="noQmsg" style="text-align: center">You have no question yet.</p>
+<% else %>
+  <% @answers.each do |a| %>
+  <% q = Question.find(a.question_id) %><% u = User.find(q.user_id) %>
+  <% if u.id == current_user.id %>
+    <% by = "you" %>
+  <% else %>
+    <% by = u.first_name.upcase  %>
+  <% end %>
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Q: <%= q.subject %></b>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge">see all answers</span></a>
+      <div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
+
+      <!-- for editing at same page -->
+      <!-- <div><button class="btn editBtn" onClick="this.disabled=true"><i class="w3-tiny fa fa-pencil-square-o" aria-hidden="true">Edit Answer</i></button></div> -->
+      <a href="/answers/<%= a.id %>/edit"><button class="btn editBtn"><i class="w3-tiny fa fa-pencil-square-o" aria-hidden="true">Edit Answer</i></button></a>
+
+      <div class="panel-body">
+      A:&nbsp;<%= a.content %><br>
+      <!-- <form id="edit_ans" action="/answers/<%= a.id %>" method="post">
+          <input id="hidden" type="hidden" name="_method" value="put">
+          A:&nbsp;<p id="ans_cont"><%= a.content %></p></form><br> -->
+
+        <form style="float: right; margin: 0 -15px -15px 0" action='/answers/<%= a.id %>' method='post'>
+        <input id='hidden' type="hidden" name="_method" value="delete">
+        <button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form>
+      </div>
+    </div>
+  <% end %>
+<% end %>

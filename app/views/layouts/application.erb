@@ -12,34 +12,44 @@
     
         <% flash.keys.each do |type| %>
           <div data-alert class="flash <%= type %> alert-box radius">
-          <%= flash[type] %>
-          <a href="#" class="close">&times;</a>
+          <% if type == 'msg'.to_sym %>
+            <div id="alert" class="alert alert-success"><strong><%= flash[type] %></strong>
+          <% elsif type == 'info'.to_sym %>
+            <div id="alert" class="alert alert-info"><strong><%= flash[type] %></strong>
+          <%else%>
+            <div id="danger" class="alert alert-danger"><strong><%= flash[type] %></strong>
+          <%end%>
+          <a href="#" class="close">&times;</a></div>
           </div>
         <% end %>
 
         <header>
-        <h1>eRa</h1>
+        <h1>eRa
+          <% if current_user %>
+            <form style="float: right" action="/session/<%= current_user.id %>" method="post">
+            <input id="hidden" type="hidden" name="_method" value="delete">
+            <input class="logoutbtn" type="submit" value="Log Out">
+            </form>
+          <% end %>
+        </h1>
         <% if current_user %>
         <% @q = Question.where(user_id: current_user.id).length %>
+        <% @a = Answer.where(user_id: current_user.id).length %>
           <a href='/profile'> My Profile&nbsp; |</a>
           <!-- <a href='/questions/new'>Ask Question&nbsp; |</a> -->
-          <a href='/questions/<%= current_user.id %>'>My Questions&nbsp;<span class="badge"><%= @q %></span> |</a>
-          <a href='/questions'>All Questions&nbsp;<span class="badge"><%= Question.all.length %></span></a>
-          <!-- <a href="/users/<%= current_user.id %>/answers"> My Answers&nbsp; |</a> -->
+          <a href='/users/<%= current_user.id %>/questions'>My Questions&nbsp;<span id="badge1" class="badge"><%= @q %></span> |</a>
+          <a href="/users/<%= current_user.id %>/answers"> My Answers&nbsp;<span id="badge3" class="badge"><%= @a %></span> |</a>
           <!-- <a href="/"> Log out&nbsp; |</a> -->
+        <% else %>      
+          <a href='/'>Sign Up  |</a>
+          <a href="/session/new"> Login  |</a>
         <% end %>
+
+        <a href='/questions'>See All Questions&nbsp;<span id="badge2" class="badge"><%= Question.all.length %></span></a>
+        
     </header>
 
     <%= yield %>
-
-    <footer>
-      <% if current_user %>
-        <form action="/session/<%= current_user.id %>" method="post">
-        <input id="hidden" type="hidden" name="_method" value="delete">
-        <input class="logoutbtn" type="submit" value="Log Out">
-        </form>
-      <% end %>
-    </footer>
 
 	</body>
 </html>
