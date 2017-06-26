@@ -2,7 +2,7 @@
 get '/questions/:id/answers/new' do
   if logged_in?
     @question = Question.find_by_id(params[:id])
-    erb :"static/answers"
+    erb :"static/answers/answer_form"
   else
     flash[:info] = "You need to log in to answer the question."
     redirect '/questions'
@@ -26,7 +26,7 @@ end
 # show all answers user posted
 get '/users/:id/answers' do
   @answers = Answer.where(user_id: params[:id]).order('created_at desc')
-  erb :"static/my_answers"
+  erb :"static/answers/my_answers"
 end
 
 # delete particular answer
@@ -35,13 +35,6 @@ delete '/answers/:id' do
   answer.delete
   flash[:msg] = "Answer deleted"
   redirect '/users/'+ current_user.id.to_s + '/answers'
-end
-
-# show particular question with all the respective answers
-get '/questions/:id/answers' do
-  @q = Question.find(params[:id])
-  @answers = Answer.where(question_id: params[:id])
-  erb :"static/q&a"
 end
 
 # get form for editing an answer

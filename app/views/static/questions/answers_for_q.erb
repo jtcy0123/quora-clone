@@ -36,7 +36,19 @@
     <div class="panel panel-default">
       <div class="panel-body">A: <b><%= a.content %></b>
       <div style="text-align: right; font-size: 10px">updated on&nbsp;<%= a.updated_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
-      <button id="voteBtn" class="btn btn-info"><i class="fa fa-thumbs-up">&ensp;<%= a.votes %></i></button>
+      
+       <form id="voteAForm" style='display:inline;' method='post' action='/answers/<%= a.id %>/add'>
+
+         <% if current_user && @list.find_by_answer_id(a.id) != nil %>
+          <button type="submit" id="voteBtn" class="btn btn-primary">
+          <% else %>
+          <button type="submit" id="voteBtn" class="btn btn-info">
+          <% end %>
+
+
+          <i class="fa fa-thumbs-up">&ensp;<%= @votes[a.id] ||= 0 %></i></button>
+        </form>
+
     </div>
   <% end %>
 <% end %>
