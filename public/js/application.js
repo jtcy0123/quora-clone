@@ -50,6 +50,36 @@ $(document).ready(function() {
     $('#emailform').html('<input type=text placeholder="Email" name="user[email]" value="'+value+'" required><input type=submit value="Save">')
   })
 
+  // for voting question using ajax
+  $('.voteForm').on('submit',function(event) {
+    event.preventDefault()
+    $.ajax({
+      url: $(this).attr('action'),
+      method: 'post',
+      data: $(this).serialize(),
+
+      success: function(data) {
+        res = JSON.parse(data)
+
+        a = parseInt($('#vote_' + res.id).text())
+        if (res.vote == 0) {
+          a -= 1
+          $('#voteBtn:focus').removeClass('btn-primary').addClass('btn-info')
+          $('#like_' + res.id).text('like')
+        }
+        else {
+          a += 1
+          $('#voteBtn:focus').removeClass('btn-info').addClass('btn-primary')
+          $('#like_' + res.id).text('liked')
+        }
+        $('#vote_' + res.id).text(' '+ a)
+      }
+    })
+
+  })
+
+
+
   // $('#voteBtn i').click(function(e) {
   //   var voted = $(this).data('clicks');
   //   if (voted) {
