@@ -9,7 +9,7 @@
                         <img  src="https://s-media-cache-ak0.pinimg.com/originals/3e/08/28/3e082861160deaffee67ce2834856be1.jpg" class="img-rounded img-responsive" />
                     </div>
                     <div class="col-sm-6 col-md-8">
-                        <h4><p id="fullname"><i id="fname"><%= current_user.first_name.upcase %></i><i id="lname">&nbsp;<%= current_user.last_name.upcase %></i>
+                        <h4><p id="fullname"><i id="fname"><%= current_user.first_name.upcase %></i>&nbsp;<i id="lname"><%= current_user.last_name.upcase %></i>
                         <a href="#"><i id="edit_name" class="w3-small fa fa-pencil-square-o" aria-hidden="true"></i></a></p>
                         <form action="/users/<%= current_user.id %>" method="post" ><input id="hidden" type="hidden" name="_method" value="patch"><p id="nameform"></p></form></h4>
                         <p id="hideemail"><i class="glyphicon glyphicon-envelope"></i>&nbsp;<i id="uemail"><%= current_user.email %></i>

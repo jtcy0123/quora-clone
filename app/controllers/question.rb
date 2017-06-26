@@ -16,13 +16,32 @@ end
 # show particular user's questions
 get '/users/:id/questions' do
   @questions = Question.where(user_id: params[:id]).order('created_at desc')
-  erb :"static/questions"
+  erb :"static/questions/user_questions"
 end
 
 # show all questions
 get '/questions' do
   @questions = Question.order('created_at desc')
-  erb :"static/all_questions"
+  # eg @votes = {50=>1, 53=>2}
+  @votes = QuestionVote.group(:question_id).where(vote: 1).count
+  if logged_in?
+    # list of questions current user liked
+    @list = QuestionVote.where(user_id: current_user.id, vote: 1)
+  end
+  erb :"static/questions/all_questions"
+end
+
+# show particular question with all the respective answers
+get '/questions/:id/answers' do
+  @q = Question.find(params[:id])
+  @answers = Answer.where(question_id: params[:id])
+  # eg @votes = {50=>1, 53=>2}
+  @votes = AnswerVote.group(:answer_id).where(vote: 1).count
+  if logged_in?
+    # list of questions current user liked
+    @list = AnswerVote.where(user_id: current_user.id, vote: 1)
+  end
+  erb :"static/questions/answers_for_q"
 end
 
 # delete particular question

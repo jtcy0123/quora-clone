@@ -17,11 +17,23 @@
       <i style="color: #ccc">DESCRIPTION:</i><br><%= q.description %></div>
     <% end %>
     
-    <button id="voteBtn" class="btn btn-info"><i class="fa fa-thumbs-up">&ensp;<%= q.votes %></i></button>
+     <form id="voteQForm" style='display:inline;' method='post' action='/questions/<%= q.id %>/add'>
+
+     <% if current_user && @list.find_by_question_id(q.id) != nil %>
+      <button type="submit" id="voteBtn" class="btn btn-primary">
+      <% else %>
+      <button type="submit" id="voteBtn" class="btn btn-info">
+      <% end %>
+
+
+      <i class="fa fa-thumbs-up">&ensp;<%= @votes[q.id] ||= 0 %></i></button>
+    </form>
+
     <% if current_user.nil? %>
     <a href="/questions/<%= q.id %>/answers/new"><button id="ansBtn" class="btn btn-default" style="color: #ccc"><i class="fa fa-pencil">Answer</i></button></a>
     <% else %>
     <a href="/questions/<%= q.id %>/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a>
     <% end %>
+
   </div>
 <% end %>

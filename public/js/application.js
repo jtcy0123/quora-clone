@@ -1,10 +1,12 @@
 $(document).ready(function() {
 
+  // flash messages
   $('.alert').hide().slideDown(500);
   setTimeout(function(){$('#danger').fadeTo(1000,0.4);}, 5000);
   setTimeout(function(){$('#alert').fadeOut();}, 4000);
   $(window).click(function(){$('.alert').fadeOut();});
 
+  // when new question submitted
   $('#ask_question').on('submit', function(event) {
     event.preventDefault()
     $.ajax({
@@ -24,7 +26,7 @@ $(document).ready(function() {
 
         $('#ask_question')[0].reset();
 
-        $('<div class="panel panel-default"><div class="panel-heading"><b>'+ res.subject +'</b></div><div class="panel-body">'+ res.description +'</div><table><tr><td><button id="voteBtn" class="btn btn-info"><i class="fa fa-thumbs-up">&ensp;'+ res.votes +'</i></button></td><td><form style="margin-bottom: -3px" action="/questions/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td></tr></table></div>').hide().insertAfter('#ask_question').fadeIn(1000);
+        $('<div class="panel panel-default"><div class="panel-heading">Subject:&ensp;<a href="/questions/'+ res.id +'/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/'+ res.id +'/answers"><span class="badge">see all answers</span></a><br><b>'+ res.subject +'</b></div><div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br>'+ res.description +'</div><table><tr><td><form style="margin-bottom: -3px" action="/questions/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td><a href="/questions/'+ res.id +'/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table></div>').hide().insertAfter('#ask_question').fadeIn(1000);
       },
       error: function(data) {
         $('#error').html(data.responseText)
@@ -48,29 +50,20 @@ $(document).ready(function() {
     $('#emailform').html('<input type=text placeholder="Email" name="user[email]" value="'+value+'" required><input type=submit value="Save">')
   })
 
-  // for editing answer
-  // $('.editBtn').click(function(e) {
-  //   edit = $(e.target).parent().parent().next().children().children().eq(1)
-  //   var content = edit.html()
-  //   edit.html('<input style="background-color: #f5f5f5" class="btn-block" name="answer[content]" value="' + content + '" required><input type=submit value="Save">')
-  //   // edit.html('<textarea style="background-color: #f5f5f5" class="btn-block" name="answer[content]" form="edit_ans" rows="8"  required>' + content + '</textarea><input type=submit value="Save">')
+  // $('#voteBtn i').click(function(e) {
+  //   var voted = $(this).data('clicks');
+  //   if (voted) {
+  //     $('#voteBtn:focus').removeAttr('style')
+  //     ele = $(e.target)
+  //     vote = parseInt(ele.text()) - 1
+  //     ele.text('  ' + vote)
+  //   } else {
+  //     $('#voteBtn:focus').css({'background':'#428bda', 'border-color':'#428bda', 'font-size':'18px'})
+  //     ele = $(e.target)
+  //     vote = parseInt(ele.text()) + 1
+  //     ele.text('  ' + vote)
+  //   }
+  //   $(this).data("clicks", !voted);
   // })
-
-
-  $('#voteBtn i').click(function(e) {
-    var voted = $(this).data('clicks');
-    if (voted) {
-      $('#voteBtn:focus').removeAttr('style')
-      ele = $(e.target)
-      vote = parseInt(ele.text()) - 1
-      ele.text('  ' + vote)
-    } else {
-      $('#voteBtn:focus').css({'background':'#428bda', 'border-color':'#428bda', 'font-size':'18px'})
-      ele = $(e.target)
-      vote = parseInt(ele.text()) + 1
-      ele.text('  ' + vote)
-    }
-    $(this).data("clicks", !voted);
-  })
 
 })
