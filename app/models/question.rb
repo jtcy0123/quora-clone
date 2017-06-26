@@ -3,7 +3,7 @@ class Question < ActiveRecord::Base
   belongs_to :user
   has_many :answers
 
-  validates :subject, presence: true, length: { in: 3..50 }
-  validates :description, presence: true
+  validates :subject, presence: true, length: { in: 3..90 }
+  # validates :description, presence: true
 
 end

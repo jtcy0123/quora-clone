@@ -13,7 +13,14 @@
 <div class="panel panel-default">
   <div class="panel-heading"><b>Q: <%= @q.subject %></b>
   <div style="text-align: right; font-size: 10px">created on&nbsp;<%= @q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
-  <div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br><%= @q.description %></div>
+  <div class="panel-body">
+
+  <% if @q.description.length == 0%>
+    <i style="color: #ccc">NO DESCRIPTION</i>
+  <% else %>
+    <i style="color: #ccc">DESCRIPTION:</i><br><%= @q.description %>
+  <% end %></div>
+
   <% if !current_user.nil? %>
     <a href="/questions/<%= @q.id %>/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a>
   <% end %>
@@ -28,7 +35,7 @@
     <% by = author(u) %>
     <div class="panel panel-default">
       <div class="panel-body">A: <b><%= a.content %></b>
-      <div style="text-align: right; font-size: 10px">created on&nbsp;<%= a.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
+      <div style="text-align: right; font-size: 10px">updated on&nbsp;<%= a.updated_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
       <button id="voteBtn" class="btn btn-info"><i class="fa fa-thumbs-up">&ensp;<%= a.votes %></i></button>
     </div>
   <% end %>

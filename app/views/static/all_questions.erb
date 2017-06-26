@@ -7,9 +7,16 @@
     <% by = u.first_name.upcase  %>
   <% end %>
   <div class="panel panel-default">
-    <div class="panel-heading"><b><%= q.subject %></b>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge"><%= Answer.where(question_id: q.id).length %> answers</span></a>
+    <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b>
     <div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
-    <div class="panel-body"><%= q.description %></div>
+    <div class="panel-body">
+
+    <% if q.description.length == 0%>
+      <i style="color: #ccc">NO DESCRIPTION</i></div>
+    <% else %>
+      <i style="color: #ccc">DESCRIPTION:</i><br><%= q.description %></div>
+    <% end %>
+    
     <button id="voteBtn" class="btn btn-info"><i class="fa fa-thumbs-up">&ensp;<%= q.votes %></i></button>
     <% if current_user.nil? %>
     <a href="/questions/<%= q.id %>/answers/new"><button id="ansBtn" class="btn btn-default" style="color: #ccc"><i class="fa fa-pencil">Answer</i></button></a>

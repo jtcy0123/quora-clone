@@ -46,7 +46,7 @@ put '/questions/:id' do
     flash[:msg] = "Question updated successfully"
     redirect '/users/' + current_user.id.to_s + '/questions'
   else
-    flash[:error] = "Invalid input :( Please try again!"
+    flash[:error] = @question.errors.full_messages.join('. ')
     erb :'static/questions/edit'
   end
 end

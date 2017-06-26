@@ -2,7 +2,7 @@
 
 <form id='edit_question' action="/questions/<%= @question.id %>" method="post">
   <input id="hidden" type="hidden" name="_method" value="put">
-  Subject: <input style="background-color: #dcdcdc" class="btn-block" type="text" name="question[subject]" value="<%= @question.subject %>" required>
-  <textarea style="background-color: #f5f5f5" class="btn-block" name='question[description]' form='edit_question' rows="5" required><%= @question.description %></textarea>
+  Subject: <input style="background-color: #dcdcdc" class="btn-block" type="text" name="question[subject]" value="<%= @question.subject %>" maxlength="90" required>
+  <textarea style="background-color: #f5f5f5" class="btn-block" name='question[description]' form='edit_question' rows="5"><%= @question.description %></textarea>
   <input type="submit" value="Edit">
 </form>
