@@ -17,16 +17,15 @@
       <i style="color: #ccc">DESCRIPTION:</i><br><%= q.description %></div>
     <% end %>
     
-     <form id="voteQForm" style='display:inline;' method='post' action='/questions/<%= q.id %>/add'>
+     <form class="voteForm" style='display:inline;' method='post' action='/questions/<%= q.id %>/add'>
 
      <% if current_user && @list.find_by_question_id(q.id) != nil %>
-      <button type="submit" id="voteBtn" class="btn btn-primary">
+      <button type="submit" id="voteBtn" class="btn btn-primary"><i id="like_<%= q.id %>">liked</i>
       <% else %>
-      <button type="submit" id="voteBtn" class="btn btn-info">
-      <% end %>
+      <button type="submit" id="voteBtn" class="btn btn-info"><i id="like_<%= q.id %>">like</i>
+      <% end %></button>
 
-
-      <i class="fa fa-thumbs-up">&ensp;<%= @votes[q.id] ||= 0 %></i></button>
+      <i id="vote_<%= q.id %>" class="fa fa-thumbs-up">&nbsp;<%= @votes[q.id] ||= 0 %></i>
     </form>
 
     <% if current_user.nil? %>
