@@ -15,9 +15,10 @@
         
 
         <div id="header" class="fixed-header">
-        <div><img class="logo" src="/img/ana-logo.png">&emsp;<i id="webname">Ask n Answer</i></div>
+        <img class="logo" src="/img/ana-logo.png">&emsp;<i id="webname">Ask n Answer</i>
 
-        <div style="float: left; clear: both">
+        <!-- <div style="float: left; clear: both"> -->
+        <table style="float: right"><tr><td>
         <% if current_user %>
         <% @q = Question.where(user_id: current_user.id).length %>
         <% @a = Answer.where(user_id: current_user.id).length %>
@@ -27,19 +28,22 @@
           <a href="/users/<%= current_user.id %>/answers"> My Answers&nbsp;<span id="badge3" class="badge"><%= @a %></span> |</a>
           <!-- <a href="/"> Log out&nbsp; |</a> -->
         <% else %>      
-          <a href='/'>Sign Up  |</a>
-          <a href="/session/new"> Login  |</a>
+          <button class="logoutbtn" style="background-color: #ccc">Login</button>
+          &ensp;<a href='/'>Sign Up  |</a>
+          <!-- <a href="/session/new"> Login  |</a> -->
         <% end %>
 
-        <a href='/questions'>See All Questions&nbsp;<span id="badge2" class="badge"><%= Question.all.length %></span></a></div>
-        <div style="float: right">
+        <a href='/questions'>See All Questions&nbsp;<span id="badge2" class="badge"><%= Question.all.length %></span></a>
+        </td><td>&emsp;</td><td>
+        <!-- </div><div style="float: right"> -->
         <% if current_user %>
             <form action="/session/<%= current_user.id %>" method="post">
             <input id="hidden" type="hidden" name="_method" value="delete">
             <input class="logoutbtn" type="submit" value="Log Out">
             </form>
           <% end %>
-        </div>
+        <!-- </div> -->
+        </td></tr></table>
         </div>
 
         <div id="content">
