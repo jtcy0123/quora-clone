@@ -28,7 +28,7 @@
           <a href="/users/<%= current_user.id %>/answers"> My Answers&nbsp;<span id="badge3" class="badge"><%= @a %></span> |</a>
           <!-- <a href="/"> Log out&nbsp; |</a> -->
         <% else %>      
-          <button class="logoutbtn" style="background-color: #ccc">Login</button>
+          <a href="/session/new"><button class="logoutbtn" style="background-color: #ccc">Login</button></a>
           &ensp;<a href='/'>Sign Up  |</a>
           <!-- <a href="/session/new"> Login  |</a> -->
         <% end %>
