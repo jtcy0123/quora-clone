@@ -3,12 +3,12 @@ body {
 }
 
 .logo {
-    height: 15%;
+    height: 10%;
 }
 
 #webname {
     font-family: 'Yellowtail'; 
-    font-size: 25px;
+    font-size: 20px;
     color: #6495ED;
 }
 
@@ -22,7 +22,7 @@ h1, h3 {
     padding: 5px 10px;
     text-align: center;
     font-size: 15px;
-    margin-top: -10px;
+    margin-top: 10px;
     cursor: pointer;
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
