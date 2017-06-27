@@ -40,12 +40,12 @@
        <form class="voteForm" style='display:inline;' method='post' action='/answers/<%= a.id %>/add'>
 
          <% if current_user && @list.find_by_answer_id(a.id) != nil %>
-          <button type="submit" id="voteBtn" class="btn btn-primary"><i id="like_<%= a.id %>">liked</i>
+          <button type="submit" id="voteBtn" class="btn btn-primary"><i id="like<%= a.id %>">liked</i>
           <% else %>
-          <button type="submit" id="voteBtn" class="btn btn-info"><i id="like_<%= a.id %>">like</i>
+          <button type="submit" id="voteBtn" class="btn btn-info"><i id="like<%= a.id %>">like</i>
           <% end %></button>
 
-          <i id="vote_<%= a.id %>" class="fa fa-thumbs-up">&nbsp;<%= @votes[a.id] ||= 0 %></i>
+          <i id="vote<%= a.id %>" class="fa fa-thumbs-up">&nbsp;<%= @votes[a.id] ||= 0 %></i>
         </form>
 
     </div>

@@ -50,7 +50,7 @@ $(document).ready(function() {
     $('#emailform').html('<input type=text placeholder="Email" name="user[email]" value="'+value+'" required><input type=submit value="Save">')
   })
 
-  // for voting question using ajax
+  // for voting using ajax
   $('.voteForm').on('submit',function(event) {
     event.preventDefault()
     $.ajax({
@@ -61,23 +61,25 @@ $(document).ready(function() {
       success: function(data) {
         res = JSON.parse(data)
 
-        a = parseInt($('#vote_' + res.id).text())
+        a = parseInt($('#vote' + res.id).text())
         if (res.vote == 0) {
           a -= 1
           $('#voteBtn:focus').removeClass('btn-primary').addClass('btn-info')
-          $('#like_' + res.id).text('like')
+          $('#like' + res.id).text('like')
         }
         else {
           a += 1
           $('#voteBtn:focus').removeClass('btn-info').addClass('btn-primary')
-          $('#like_' + res.id).text('liked')
+          $('#like' + res.id).text('liked')
         }
-        $('#vote_' + res.id).text(' '+ a)
+        $('#vote' + res.id).text(' '+ a)
+      },
+
+      error: function(data) {
+        $('#errormsg').html('<div id="alert" class="alert alert-info"><strong>'+data.responseText+'</strong></div>')
       }
     })
-
   })
-
 
 
   // $('#voteBtn i').click(function(e) {

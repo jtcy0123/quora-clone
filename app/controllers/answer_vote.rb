@@ -11,9 +11,8 @@ post '/answers/:id/add' do
     end
     a = {id: params[:id], vote: @v.vote}
     return a.to_json
-    redirect back
   else
-    flash[:info] = "You need to log in to vote for the answer."
-    redirect back
+    status 400
+    return "You need to log in to vote for the answer."
   end
 end
