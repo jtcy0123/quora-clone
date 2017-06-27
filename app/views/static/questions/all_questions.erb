@@ -1,4 +1,9 @@
-<h2>QUESTIONS FROM ALL USERS</h2>
+<% if current_user.nil? %>
+  <h3>MOST RECENT QUESTIONS</h3>
+  <h2 style="text-align: center;"><i>Log in to see more</i></h2>
+<% else %>
+  <h3>QUESTIONS FROM ALL USERS</h3>
+<% end %>
 
 <% @questions.each do |q| %> <% u = User.find(q.user_id) %>
   <% if !current_user.nil? && u.id == current_user.id %>
@@ -7,7 +12,7 @@
     <% by = u.first_name.upcase  %>
   <% end %>
   <div class="panel panel-default">
-    <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b>
+    <div class="panel-heading">Subject:&ensp;<span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span><br><a href="/questions/<%= q.id %>/answers"><b><%= q.subject %></b></a>
     <div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
     <div class="panel-body">
 
