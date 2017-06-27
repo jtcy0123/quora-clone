@@ -21,12 +21,14 @@ end
 
 # show all questions
 get '/questions' do
-  @questions = Question.order('created_at desc')
   # eg @votes = {50=>1, 53=>2}
   @votes = QuestionVote.group(:question_id).where(vote: 1).count
   if logged_in?
     # list of questions current user liked
+    @questions = Question.order('created_at desc')
     @list = QuestionVote.where(user_id: current_user.id, vote: 1)
+  else
+    @questions = Question.order('created_at desc').first(5)
   end
   erb :"static/questions/all_questions"
 end

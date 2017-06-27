@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+  // for header and content display
+  var contentPlacement = $('#header').height() + 5;
+  $('#content').css('margin-top',contentPlacement );
+
   // flash messages
   $('.alert').hide().slideDown(500);
   setTimeout(function(){$('#danger').fadeTo(1000,0.4);}, 5000);
