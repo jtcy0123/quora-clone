@@ -1,3 +1,13 @@
+.fixed-header {
+    background-image: url(/img/header_background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    left: 0;
+    right: 0;
+    padding: 0px 20px;
+    position: fixed;
+}
+
 body {
     background-image: url(/img/body_background.jpg);
 }
@@ -32,12 +42,3 @@ h1, h3 {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-.fixed-header {
-    background-image: url(/img/header_background.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    left: 0;
-    right: 0;
-    padding: 0px 20px;
-    position: fixed;
-}

@@ -1,7 +1,7 @@
 <h3>YOU HAVE ANSWERED <b>&ensp;<%= @answers.length %>&ensp;</b> QUESTION(S)</h3>
 
 <% if @answers.length == 0 %>
-  <p id="noQmsg" style="text-align: center">You have no answer yet.</p>
+  <p id="noQmsg" style="text-align: center">You have not answered any question yet.</p>
 <% else %>
   <% @answers.each do |a| %>
   <% q = Question.find(a.question_id) %><% u = User.find(q.user_id) %>

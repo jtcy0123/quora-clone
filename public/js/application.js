@@ -2,6 +2,7 @@ $(document).ready(function() {
 
   // for header and content display
   var contentPlacement = $('#header').height() + 5;
+  console.log(contentPlacement)
   $('#content').css('margin-top',contentPlacement );
 
   // flash messages
