@@ -15,8 +15,14 @@ end
 
 # show particular user's questions
 get '/users/:id/questions' do
-  @questions = Question.where(user_id: params[:id]).order('created_at desc')
-  erb :"static/questions/user_questions"
+  if logged_in? && current_user.id == params[:id].to_i
+    @questions = Question.where(user_id: params[:id]).order('created_at desc')
+    erb :"static/questions/user_questions"
+  elsif logged_in?
+    redirect '/users/' + current_user.id.to_s + '/questions'
+  else
+    redirect '/'
+  end
 end
 
 # show all questions
@@ -56,8 +62,18 @@ end
 
 # get form for editing a question
 get '/questions/:id/edit' do
-  @question = Question.find(params[:id])
-  erb :'static/questions/edit'
+  if logged_in?
+    @question = Question.find(params[:id])
+    if current_user.id == @question.user_id
+      erb :'static/questions/edit'
+    else
+      flash[:info] = "That question don't belong to you."
+      redirect '/users/' + current_user.id.to_s + '/questions'
+    end
+  else
+    flash[:info] = "Please login to edit questions."
+    redirect'/'
+  end
 end
 
 # update the edited question

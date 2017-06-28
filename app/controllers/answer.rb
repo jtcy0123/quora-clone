@@ -25,8 +25,15 @@ end
 
 # show all answers user posted
 get '/users/:id/answers' do
-  @answers = Answer.where(user_id: params[:id]).order('created_at desc')
-  erb :"static/answers/my_answers"
+  if logged_in? && current_user.id == params[:id].to_i
+    @answers = Answer.where(user_id: params[:id]).order('created_at desc')
+    erb :"static/answers/my_answers"
+  elsif logged_in?
+    redirect '/users/' + current_user.id.to_s + '/answers'
+  else
+    flash[:info] = "Please login to access your answers."
+    redirect '/session/new'
+  end
 end
 
 # delete particular answer
@@ -39,9 +46,19 @@ end
 
 # get form for editing an answer
 get '/answers/:id/edit' do
-  @answer = Answer.find(params[:id])
-  @question = Question.find(@answer.question_id)
-  erb :'static/answers/edit'
+  if logged_in?
+    @answer = Answer.find(params[:id])
+    @question = Question.find(@answer.question_id)
+    if current_user.id == @answer.user_id
+      erb :'static/answers/edit'
+    else
+      flash[:info] = "That answer don't belong to you."
+      redirect '/users/' + current_user.id.to_s + '/answers'
+    end
+  else
+    flash[:info] = "Please login to edit answers."
+    redirect'/session/new'
+  end
 end
 
 # update edited answer

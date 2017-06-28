@@ -51,7 +51,12 @@ end
 
 # particular user's profile from get '/users/:id'
 get '/profile' do
-  erb :"static/profile"
+  if logged_in?
+    erb :"static/profile"
+  else
+    flash[:info] = "Please log in first."
+    redirect '/session/new'
+  end
 end
 
 # show particular user
