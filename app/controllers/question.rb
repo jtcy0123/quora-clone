@@ -21,6 +21,7 @@ get '/users/:id/questions' do
   elsif logged_in?
     redirect '/users/' + current_user.id.to_s + '/questions'
   else
+    flash[:info] = "Please signup or login"
     redirect '/'
   end
 end
