@@ -1,13 +1,13 @@
 # get form for user to post answer
-get '/questions/:id/answers/new' do
-  if logged_in?
-    @question = Question.find_by_id(params[:id])
-    erb :"static/answers/answer_form"
-  else
-    flash[:info] = "You need to log in to answer the question."
-    redirect '/questions'
-  end
-end
+# get '/questions/:id/answers/new' do
+#   if logged_in?
+#     @question = Question.find_by_id(params[:id])
+#     erb :"static/answers/answer_form"
+#   else
+#     flash[:info] = "You need to log in to answer the question."
+#     redirect '/questions'
+#   end
+# end
 
 # create answer
 post '/questions/:id/answers' do
@@ -15,11 +15,10 @@ post '/questions/:id/answers' do
   answer = Answer.new(params[:answer])
   if answer.save
     flash[:msg] = "Answer posted successfully"
-    redirect '/users/'+ current_user.id.to_s + '/answers'
+    return answer.to_json
   else
-    flash[:error] = answer.errors.full_messages.join('. ')
-    redirect '/questions/'+ params[:answer][:question_id].to_s + '/answers'
-    redirect '/questions'
+    status 400
+    return answer.errors.full_messages.join('. ')
   end
 end
 
@@ -36,12 +35,27 @@ get '/users/:id/answers' do
   end
 end
 
+# show all answers for particular question
+get '/questions/:id/answers' do
+  @q = Question.find(params[:id])
+  @answers = Answer.where(question_id: params[:id]).order('created_at desc')
+  # eg @votes = {50=>1, 53=>2}
+  @upvotes = AnswerVote.group(:answer_id).where(vote: 1).count
+  @downvotes = AnswerVote.group(:answer_id).where(vote: -1).count
+  if logged_in?
+    # list of questions current user liked
+    @uplist = AnswerVote.where(user_id: current_user.id, vote: 1)
+    @downlist = AnswerVote.where(user_id: current_user.id, vote: -1)
+  end
+  erb :"static/questions/answers_for_q"
+end
+
 # delete particular answer
 delete '/answers/:id' do
   answer = Answer.find(params[:id])
   answer.delete
   flash[:msg] = "Answer deleted"
-  redirect '/users/'+ current_user.id.to_s + '/answers'
+  redirect back
 end
 
 # get form for editing an answer

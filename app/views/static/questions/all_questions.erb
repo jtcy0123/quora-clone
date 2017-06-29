@@ -5,14 +5,16 @@
   <h3>QUESTIONS FROM ALL USERS</h3>
 <% end %>
 
+
+<%= will_paginate @questions %>
 <% @questions.each do |q| %> <% u = User.find(q.user_id) %>
   <% if !current_user.nil? && u.id == current_user.id %>
     <% by = "you" %>
   <% else %>
     <% by = u.first_name.upcase  %>
   <% end %>
-  <div class="panel panel-default">
-    <div class="panel-heading">Subject:&ensp;<span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span><br><a href="/questions/<%= q.id %>/answers"><b><%= q.subject %></b></a>
+  <div class="panel panel-info">
+    <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b>
     <div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
     <div class="panel-body">
 
@@ -22,34 +24,66 @@
       <i style="color: #ccc">DESCRIPTION:</i><br><%= q.description %></div>
     <% end %>
     
-     <form class="voteForm" style='display:inline;' method='post' action='/questions/<%= q.id %>/add'>
+<!-- Trigger the modal with a button -->
+    <% if current_user.nil? %>
+    <button type="submit" id="uvoteBtn" class="btn btn-info" data-toggle="modal" data-target="#logModal"><i id="up<%= q.id %>">upvote</i>
+      </button><i id="upvote<%= q.id %>" class="fa fa-thumbs-up">&nbsp;<%= @upvotes[q.id] ||= 0 %></i>
+    <button type="submit" id="dvoteBtn" class="btn btn-info" data-toggle="modal" data-target="#logModal"><i id="down<%= q.id %>">downvote</i>
+      </button><i id="downvote<%= q.id %>" class="fa fa-thumbs-down">&nbsp;<%= @downvotes[q.id] ||= 0 %></i>
+    <button id="ansBtn" class="btn btn-default" style="color: #ccc" data-toggle="modal" data-target="#logModal"><i class="fa fa-pencil">Answer</i></button>
 
-     <% if current_user && @list.find_by_question_id(q.id) != nil %>
-      <button type="submit" id="voteBtn" class="btn btn-primary"><i id="like<%= q.id %>">liked</i>
+    
+    <% else %>
+
+     <!-- for upvote -->    
+     <form class="upvoteForm" style='display:inline;' method='post' action='/questions/<%= q.id %>/upvote'>
+
+     <% if current_user && @uplist.find_by_question_id(q.id) != nil %>
+      <button type="submit" id="uvoteBtn" class="btn btn-primary"><i id="up<%= q.id %>">upvoted</i>
       <% else %>
-      <button type="submit" id="voteBtn" class="btn btn-info"><i id="like<%= q.id %>">like</i>
+      <button type="submit" id="uvoteBtn" class="btn btn-info"><i id="up<%= q.id %>">upvote</i>
       <% end %></button>
 
-      <i id="vote<%= q.id %>" class="fa fa-thumbs-up">&nbsp;<%= @votes[q.id] ||= 0 %></i>
+      <i id="upvote<%= q.id %>" class="fa fa-thumbs-up">&nbsp;<%= @upvotes[q.id] ||= 0 %></i>
     </form>
 
-    <% if current_user.nil? %>
-    <a href="/questions/<%= q.id %>/answers/new"><button id="ansBtn" class="btn btn-default" style="color: #ccc"><i class="fa fa-pencil">Answer</i></button></a>
-    <% else %>
-    <a href="/questions/<%= q.id %>/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a>
+
+    <!-- for downvote -->
+    <form class="downvoteForm" style='display:inline;' method='post' action='/questions/<%= q.id %>/downvote'>
+   
+    <% if current_user && @downlist.find_by_question_id(q.id) != nil %>
+      <button type="submit" id="dvoteBtn" class="btn btn-primary"><i id="down<%= q.id %>">downvoted</i>
+      <% else %>
+      <button type="submit" id="dvoteBtn" class="btn btn-info"><i id="down<%= q.id %>">downvote</i>
+      <% end %></button>
+
+      <i id="downvote<%= q.id %>" class="fa fa-thumbs-down">&nbsp;<%= @downvotes[q.id] ||= 0 %></i>
+    </form>
+
+
+    <a href="/questions/<%= q.id %>/answers"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a>
     <% end %>
 
   </div>
 <% end %>
 
-<button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Open Modal</button>
 
-<div id="id01" class="w3-modal">
-  <div class="w3-modal-content">
-    <div class="w3-container">
-      <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-      <p>Some text. Some text. Some text.</p>
-      <p>Some text. Some text. Some text.</p>
-    </div>
-  </div>
-</div>
+<!-- Modal for login -->
+<div style="text-align: center;" class="modal fade" id="logModal" role="dialog"><div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Login to answer and vote</h4>
+      </div>
+      <div class="modal-body">
+        <form method=post action=/session1>
+            <input type=text placeholder="Email" name="user[email]"><br>
+            <input type=password placeholder="Password" name="user[password]"></br>
+            <input type=submit value="Login">
+        </form>
+      </div>
+</div></div></div>  
+
+

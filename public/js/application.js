@@ -2,7 +2,6 @@ $(document).ready(function() {
 
   // for header and content display
   var contentPlacement = $('#header').height() + 5;
-  console.log(contentPlacement)
   $('#content').css('margin-top',contentPlacement );
 
   // flash messages
@@ -39,6 +38,33 @@ $(document).ready(function() {
       }
     })
   })
+
+  // when new answer submitted
+  $('#ans_question').on('submit', function(event) {
+    event.preventDefault()
+    $.ajax({
+      url: $(this).attr('action'),
+      method: 'post',
+      data: $(this).serialize(),
+
+      success: function(data) {
+        res = JSON.parse(data)
+        
+        $('#noAmsg').hide()
+
+        num3 = parseInt($('#badge3').text()) + 1
+        $('#badge3').text(num3)
+
+        $('#ans_question')[0].reset();
+
+        $('<div class="panel panel-default"><div class="panel-body">A: <b>'+ res.content +'</b><div style="text-align: right; font-size: 10px">just updated&nbsp;by&nbsp;you</div></div><form style="display: inline" action="/answers/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></div>').hide().insertAfter('#ansList').fadeIn(1000);
+      },
+      error: function(data) {
+        $('#aerror').html(data.responseText)
+        $('#ans_question')[0].reset();
+      }
+    })
+  })
   
   // for editing names
   $('#edit_name').click(function() {
@@ -55,8 +81,48 @@ $(document).ready(function() {
     $('#emailform').html('<input type=text placeholder="Email" name="user[email]" value="'+value+'" required><input type=submit value="Save">')
   })
 
-  // for voting using ajax
-  $('.voteForm').on('submit',function(event) {
+  // for up voting using ajax
+  $('.upvoteForm').on('submit',function(event) {
+    event.preventDefault()
+    $.ajax({
+      url: $(this).attr('action'),
+      method: 'post',
+      data: $(this).serialize(),
+
+      success: function(data) {
+        res = JSON.parse(data)
+        c = $('#down' + res.id).parent()
+
+        a = parseInt($('#upvote' + res.id).text())
+        b = parseInt($('#downvote' + res.id).text())
+        c = $('#down' + res.id)
+        if (res.vote == 0) {
+          a -= 1
+          $('#uvoteBtn:focus').removeClass('btn-primary').addClass('btn-info')
+          $('#up' + res.id).text('upvote')
+        }
+        else {
+          a += 1
+          $('#uvoteBtn:focus').removeClass('btn-info').addClass('btn-primary')
+          $('#up' + res.id).text('upvoted')
+          if (c.text() == 'downvoted') {
+            c.parent().removeClass('btn-primary').addClass('btn-info')
+            c.text('downvote')
+            b -= 1
+            $('#downvote' + res.id).text(' '+ b)
+          }
+        }
+        $('#upvote' + res.id).text(' '+ a)
+      },
+
+      error: function(data) {
+        $('#errormsg').html('<div id="alert" class="alert alert-info"><strong>'+data.responseText+'</strong></div>')
+      }
+    })
+  })
+
+  // for down voting using ajax
+  $('.downvoteForm').on('submit',function(event) {
     event.preventDefault()
     $.ajax({
       url: $(this).attr('action'),
@@ -66,18 +132,26 @@ $(document).ready(function() {
       success: function(data) {
         res = JSON.parse(data)
 
-        a = parseInt($('#vote' + res.id).text())
+        d = parseInt($('#downvote' + res.id).text())
+        u = parseInt($('#upvote' + res.id).text())
+        c = $('#up' + res.id)
         if (res.vote == 0) {
-          a -= 1
-          $('#voteBtn:focus').removeClass('btn-primary').addClass('btn-info')
-          $('#like' + res.id).text('like')
+          d -= 1
+          $('#dvoteBtn:focus').removeClass('btn-primary').addClass('btn-info')
+          $('#down' + res.id).text('downvote')
         }
         else {
-          a += 1
-          $('#voteBtn:focus').removeClass('btn-info').addClass('btn-primary')
-          $('#like' + res.id).text('liked')
+          d += 1
+          $('#dvoteBtn:focus').removeClass('btn-info').addClass('btn-primary')
+          $('#down' + res.id).text('downvoted')
+          if (c.text() == 'upvoted') {
+            c.parent().removeClass('btn-primary').addClass('btn-info')
+            c.text('upvote')
+            u -= 1
+            $('#upvote' + res.id).text(' '+ u)
+          }
         }
-        $('#vote' + res.id).text(' '+ a)
+        $('#downvote' + res.id).text(' '+ d)
       },
 
       error: function(data) {
@@ -85,22 +159,5 @@ $(document).ready(function() {
       }
     })
   })
-
-
-  // $('#voteBtn i').click(function(e) {
-  //   var voted = $(this).data('clicks');
-  //   if (voted) {
-  //     $('#voteBtn:focus').removeAttr('style')
-  //     ele = $(e.target)
-  //     vote = parseInt(ele.text()) - 1
-  //     ele.text('  ' + vote)
-  //   } else {
-  //     $('#voteBtn:focus').css({'background':'#428bda', 'border-color':'#428bda', 'font-size':'18px'})
-  //     ele = $(e.target)
-  //     vote = parseInt(ele.text()) + 1
-  //     ele.text('  ' + vote)
-  //   }
-  //   $(this).data("clicks", !voted);
-  // })
 
 })

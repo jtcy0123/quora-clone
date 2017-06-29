@@ -1,3 +1,5 @@
+# include WillPaginate::Sinatra::Helpers
+
 enable :sessions
 set :session_secret, "My session secret"
 
@@ -13,25 +15,20 @@ get '/' do
 end
 
 # create user
-post '/user' do
+post '/user:id' do
   user = User.new(params[:user])
   if user.save
     flash[:msg] = "Account created successfully"
-    redirect '/'
+    session[:user_id] = User.find_by_email(user.email).id
+    redirect '/profile'
   else
     flash[:error] = user.errors.full_messages.join('. ')
     redirect '/'
   end
 end
 
-# get form for user to log in
-get '/session/new' do
-  session[:user_id] = nil
-  erb :"static/login"
-end
-
 # log the user in
-post '/session' do
+post '/session:id' do
   user = User.find_by(email: params[:user][:email])
   if user != nil
     if !user.authenticate(params[:user][:password])
@@ -41,7 +38,11 @@ post '/session' do
       # if log in successfully, store in session
       flash[:msg] = "Login Successfully"
       session[:user_id] = user.id
-      redirect '/users/' + user.id.to_s
+      if params[:id] == 0
+        redirect '/users/' + user.id.to_s
+      else
+        redirect back
+      end
     end
   else
     flash[:error] = "Invalid email"

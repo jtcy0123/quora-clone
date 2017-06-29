@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 # Ruby Version
 # ruby "2.2.1"
 
+group :development, :production do
+  gem 'will_paginate', '~> 3.1.0'
+end
+
 # Adding Sinatra Drivers
 gem 'sinatra'
 gem 'sinatra-contrib'

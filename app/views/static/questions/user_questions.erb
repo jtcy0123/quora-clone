@@ -12,8 +12,8 @@
   <p id="noQmsg" style="text-align: center">You have no question yet.</p>
 <% else %>
   <% @questions.each do |q| %>
-    <div class="panel panel-default">
-      <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<span class="badge w3-grey"><%= Answer.where(question_id: q.id).length %> answers</span><br><a href="/questions/<%= q.id %>/answers"><b><%= q.subject %></b></a><div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %></div></div>
+    <div class="panel panel-info">
+      <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-grey"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b><div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %></div></div>
       <div class="panel-body">
       
       <% if q.description.length == 0%>
@@ -26,7 +26,7 @@
        <form style="margin-bottom: -3px" action='/questions/<%= q.id %>' method='post'>
        <input id='hidden' type="hidden" name="_method" value="delete">
       <button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td>
-      <a href="/questions/<%= q.id %>/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table>
+      <a href="/questions/<%= q.id %>/answers"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table>
     </div>
   <% end %>
 <% end %>
