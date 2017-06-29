@@ -2,7 +2,7 @@
 <h1>A place to share knowledge and better understand the world</h1>
 
 <h2>Sign up for an account!</h2>
-<form method="post" action="/user">
+<form id="signForm" method="post" action="/user0">
     <input type=text placeholder="First Name" name="user[first_name]" required><br>
     <input type=text placeholder="Last Name" name="user[last_name]" required><br>
     <input type=text placeholder="Email" name="user[email]" required><br>
@@ -11,5 +11,23 @@
 </form>
 
 <p>Have an account already?
-<button><a href="/session/new">Login</a></button></p>
+<button type="button" data-toggle="modal" data-target="#logModal">Login</button></p>
 </div>
+
+<!-- Modal -->
+<div style="text-align: center;" class="modal fade" id="logModal" role="dialog"><div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">Login</h3>
+      </div>
+      <div class="modal-body">
+        <form method=post action=/session1>
+            <input type=text placeholder="Email" name="user[email]"><br>
+            <input type=password placeholder="Password" name="user[password]"></br>
+            <input type=submit value="Login">
+        </form>
+      </div>
+</div></div></div>  

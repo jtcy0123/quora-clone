@@ -12,9 +12,9 @@
             <a href="#"><i id="edit_email" class="w3-small fa fa-pencil-square-o" aria-hidden="true"></i></a></p>
             <form action="/users/<%= current_user.id %>" method="post" ><input id="hidden" type="hidden" name="_method" value="patch"><p id="emailform"></p></form><br />
             <i class="glyphicon glyphicon-gift"></i>&nbsp;member since&nbsp;<%= current_user.created_at.strftime('%B %d, %Y') %></p>
-            <br><br><br>
-            You liked :
-            <li><%= QuestionVote.where(user_id: current_user.id).sum(:vote) %> questions</li>
-            <li><%= AnswerVote.where(user_id: current_user.id).sum(:vote) %> answers</li>   
+            <br><br>
+            You
+            <li>upvoted : <%= QuestionVote.where(user_id: current_user.id, vote: 1).count %> questions, <%= AnswerVote.where(user_id: current_user.id, vote: 1).count %> answers</li>
+            <li>downvoted : <%= QuestionVote.where(user_id: current_user.id, vote: -1).count %> questions, <%= AnswerVote.where(user_id: current_user.id, vote: -1).count %> answers</li>
     </div></div>
 </div></div></div></div>

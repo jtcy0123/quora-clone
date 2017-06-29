@@ -1,4 +1,17 @@
-<h3>ALL ANSWERS FOR THIS QUESTION</h3>
+<% if current_user %>
+<!-- form for posting answer -->
+<p id="aerror"></p>
+<p><i class="fa fa-user w3-xxlarge"></i>&ensp;<%= current_user.first_name.upcase %></p>
+<form id="ans_question" action="/questions/<%= @q.id %>/answers" method="post">
+  <input type="hidden" name="answer[question_id]" value="<%= @q.id %>">
+  <textarea style="background-color: #f5f5f5" class="btn-block" name="answer[content]" form='ans_question' rows="4" placeholder="Write your answer here" required></textarea>
+  <input type="submit" value="Submit">
+</form>
+<% else %>
+<p>You need to log in to answer the question.</p>
+<% end %>
+
+<h5 style="text-align: center;"><b><i>= THE QUESTION =</i></b></h5>
 
 <% def author(u) %>
   <% if !current_user.nil? && u.id == current_user.id %>
@@ -10,7 +23,7 @@
 
 <% u = User.find(@q.user_id) %>
 <% by = author(u) %>
-<div class="panel panel-default">
+<div class="panel panel-primary">
   <div class="panel-heading"><b>Q: <%= @q.subject %></b>
   <div style="text-align: right; font-size: 10px">created on&nbsp;<%= @q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
   <div class="panel-body">
@@ -20,15 +33,11 @@
   <% else %>
     <i style="color: #ccc">DESCRIPTION:</i><br><%= @q.description %>
   <% end %></div>
-
-  <% if !current_user.nil? %>
-    <a href="/questions/<%= @q.id %>/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a>
-  <% end %>
 </div>
 
-<p>ANSWERS:</p>
+<h4 style="text-align: center" id="ansList"><i><b>= ALL ANSWERS FOR THIS QUESTION =</b></i></h4>
 <% if @answers.length == 0 %>
-  <p id="noQmsg" style="text-align: center">This question has no answer yet.</p>
+  <p id="noAmsg" style="text-align: center">This question has no answer yet.</p>
 <% else %>
   <% @answers.each do |a| %>
     <% u = User.find(a.user_id) %>
@@ -37,16 +46,36 @@
       <div class="panel-body">A: <b><%= a.content %></b>
       <div style="text-align: right; font-size: 10px">updated on&nbsp;<%= a.updated_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
       
-       <form class="voteForm" style='display:inline;' method='post' action='/answers/<%= a.id %>/add'>
+      <% if by == "you" %>
+        <form style="display: inline" action="/answers/<%= a.id %>" method="post">
+        <input id="hidden" type="hidden" name="_method" value="delete">
+        <button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+        </form>
+      <% else %>
+      <!-- for upvote -->
+       <form class="upvoteForm" style='display:inline;' method='post' action='/answers/<%= a.id %>/upvote'>
 
-         <% if current_user && @list.find_by_answer_id(a.id) != nil %>
-          <button type="submit" id="voteBtn" class="btn btn-primary"><i id="like<%= a.id %>">liked</i>
+         <% if current_user && @uplist.find_by_answer_id(a.id) != nil %>
+          <button type="submit" id="uvoteBtn" class="btn btn-primary"><i id="up<%= a.id %>">upvoted</i>
           <% else %>
-          <button type="submit" id="voteBtn" class="btn btn-info"><i id="like<%= a.id %>">like</i>
+          <button type="submit" id="uvoteBtn" class="btn btn-info"><i id="up<%= a.id %>">upvote</i>
           <% end %></button>
 
-          <i id="vote<%= a.id %>" class="fa fa-thumbs-up">&nbsp;<%= @votes[a.id] ||= 0 %></i>
+          <i id="upvote<%= a.id %>" class="fa fa-thumbs-up">&nbsp;<%= @upvotes[a.id] ||= 0 %></i>
         </form>
+
+        <!-- for downvote -->
+       <form class="downvoteForm" style='display:inline;' method='post' action='/answers/<%= a.id %>/downvote'>
+
+         <% if current_user && @downlist.find_by_answer_id(a.id) != nil %>
+          <button type="submit" id="dvoteBtn" class="btn btn-primary"><i id="down<%= a.id %>">downvoted</i>
+          <% else %>
+          <button type="submit" id="dvoteBtn" class="btn btn-info"><i id="down<%= a.id %>">downvote</i>
+          <% end %></button>
+
+          <i id="downvote<%= a.id %>" class="fa fa-thumbs-down">&nbsp;<%= @downvotes[a.id] ||= 0 %></i>
+        </form>
+      <% end %>
 
     </div>
   <% end %>

@@ -29,28 +29,17 @@ end
 # show all questions
 get '/questions' do
   # eg @votes = {50=>1, 53=>2}
-  @votes = QuestionVote.group(:question_id).where(vote: 1).count
+  @upvotes = QuestionVote.group(:question_id).where(vote: 1).count
+  @downvotes = QuestionVote.group(:question_id).where(vote: -1).count
   if logged_in?
     # list of questions current user liked
-    @questions = Question.order('created_at desc')
-    @list = QuestionVote.where(user_id: current_user.id, vote: 1)
+    @questions = Question.order('created_at desc').paginate(:page => params[:page], :per_page => 5)
+    @uplist = QuestionVote.where(user_id: current_user.id, vote: 1)
+    @downlist = QuestionVote.where(user_id: current_user.id, vote: -1)
   else
     @questions = Question.order('created_at desc').first(5)
   end
   erb :"static/questions/all_questions"
-end
-
-# show particular question with all the respective answers
-get '/questions/:id/answers' do
-  @q = Question.find(params[:id])
-  @answers = Answer.where(question_id: params[:id])
-  # eg @votes = {50=>1, 53=>2}
-  @votes = AnswerVote.group(:answer_id).where(vote: 1).count
-  if logged_in?
-    # list of questions current user liked
-    @list = AnswerVote.where(user_id: current_user.id, vote: 1)
-  end
-  erb :"static/questions/answers_for_q"
 end
 
 # delete particular question

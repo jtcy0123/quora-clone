@@ -5,6 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
     <script src="/js/application.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Yellowtail" rel="stylesheet">
@@ -17,7 +18,6 @@
         <div id="header" class="fixed-header">
         <a href='/'><img class="logo" src="/img/ana-logo.png"></a>&emsp;<i id="webname">Ask n Answer</i>
 
-        <!-- <div style="float: left; clear: both"> -->
         <table style="float: right"><tr><td>
         <% if current_user %>
         <% @q = Question.where(user_id: current_user.id).length %>
@@ -28,8 +28,8 @@
           <a href="/users/<%= current_user.id %>/answers"> My Answers&nbsp;<span id="badge3" class="badge"><%= @a %></span> |</a>
           <!-- <a href="/"> Log out&nbsp; |</a> -->
         <% else %>      
-          <a href="/session/new"><button class="logoutbtn" style="background-color: #ccc">Login</button></a>
-          &ensp;<a href='/'>Sign Up  |</a>
+          <button class="logoutbtn" style="background-color: #ccc" data-toggle="modal" data-target="#logModal">Login</button></a>
+          &ensp;<a data-toggle="modal" data-target="#signModal">Sign Up  |
           <!-- <a href="/session/new"> Login  |</a> -->
         <% end %>
 
@@ -67,3 +67,22 @@
 
 	</body>
 </html>
+
+<!-- Modal for signup -->
+<div style="text-align: center;" class="modal fade" id="signModal" role="dialog"><div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Sign up for an account</h4>
+      </div>
+      <div class="modal-body">
+        <form id="signForm" method="post" action="/user1">
+          <input type=text placeholder="First Name" name="user[first_name]" required><br>
+          <input type=text placeholder="Last Name" name="user[last_name]" required><br>
+          <input type=text placeholder="Email" name="user[email]" required><br>
+          <input type=password placeholder="Password (6-10 characters)" name="user[password]" maxlength="10" required><br>
+          <input type=submit value="Sign up">
+      </form>
+      </div>
+</div></div></div>  
