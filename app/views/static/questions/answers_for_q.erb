@@ -1,16 +1,3 @@
-<% if current_user %>
-<!-- form for posting answer -->
-<p id="aerror"></p>
-<p><i class="fa fa-user w3-xxlarge"></i>&ensp;<%= current_user.first_name.upcase %></p>
-<form id="ans_question" action="/questions/<%= @q.id %>/answers" method="post">
-  <input type="hidden" name="answer[question_id]" value="<%= @q.id %>">
-  <textarea style="background-color: #f5f5f5" class="btn-block" name="answer[content]" form='ans_question' rows="4" placeholder="Write your answer here" required></textarea>
-  <input type="submit" value="Submit">
-</form>
-<% else %>
-<p>You need to log in to answer the question.</p>
-<% end %>
-
 <h5 style="text-align: center;"><b><i>= THE QUESTION =</i></b></h5>
 
 <% def author(u) %>
@@ -35,6 +22,19 @@
   <% end %></div>
 </div>
 
+<% if current_user %>
+<!-- form for posting answer -->
+<p id="aerror"></p>
+<p><i class="fa fa-user w3-xxlarge"></i>&ensp;<%= current_user.first_name.upcase %></p>
+<form id="ans_question" action="/questions/<%= @q.id %>/answers" method="post">
+  <input type="hidden" name="answer[question_id]" value="<%= @q.id %>">
+  <textarea style="background-color: #f5f5f5" class="btn-block" name="answer[content]" form='ans_question' rows="4" placeholder="Write your answer here" required></textarea>
+  <input type="submit" value="Submit">
+</form>
+<% else %>
+<p>You need to log in to answer the question.</p>
+<% end %>
+
 <h4 style="text-align: center" id="ansList"><i><b>= ALL ANSWERS FOR THIS QUESTION =</b></i></h4>
 <% if @answers.length == 0 %>
   <p id="noAmsg" style="text-align: center">This question has no answer yet.</p>
@@ -43,7 +43,7 @@
     <% u = User.find(a.user_id) %>
     <% by = author(u) %>
     <div class="panel panel-default">
-      <div class="panel-body">A: <b><%= a.content %></b>
+      <div class="panel-body">Answer:<br><b><%= a.content %></b>
       <div style="text-align: right; font-size: 10px">updated on&nbsp;<%= a.updated_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
       
       <% if by == "you" %>

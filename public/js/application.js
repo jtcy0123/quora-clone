@@ -30,7 +30,7 @@ $(document).ready(function() {
 
         $('#ask_question')[0].reset();
 
-        $('<div class="panel panel-default"><div class="panel-heading">Subject:&ensp;<a href="/questions/'+ res.id +'/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/'+ res.id +'/answers"><span class="badge">see all answers</span></a><br><b>'+ res.subject +'</b></div><div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br>'+ res.description +'</div><table><tr><td><form style="margin-bottom: -3px" action="/questions/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td><a href="/questions/'+ res.id +'/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table></div>').hide().insertAfter('#ask_question').fadeIn(1000);
+        $('<div class="panel panel-info"><div class="panel-heading">Subject:&ensp;<a href="/questions/'+ res.id +'/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/'+ res.id +'/answers"><span class="badge w3-grey">0 answers</span></a><br><b>'+ res.subject +'</b><div style="text-align: right; font-size: 10px">created on&nbsp;'+ res.created_at.split('T')[0] +'</div></div><div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br>'+ res.description +'</div><table><tr><td><form style="margin-bottom: -3px" action="/questions/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td><a href="/questions/'+ res.id +'/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table></div>').hide().insertAfter('#ask_question').fadeIn(1000);
       },
       error: function(data) {
         $('#error').html(data.responseText)
@@ -57,7 +57,7 @@ $(document).ready(function() {
 
         $('#ans_question')[0].reset();
 
-        $('<div class="panel panel-default"><div class="panel-body">A: <b>'+ res.content +'</b><div style="text-align: right; font-size: 10px">just updated&nbsp;by&nbsp;you</div></div><form style="display: inline" action="/answers/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></div>').hide().insertAfter('#ansList').fadeIn(1000);
+        $('<div class="panel panel-default"><div class="panel-body">A: <b>'+ res.content +'</b><div style="text-align: right; font-size: 10px">updated on&nbsp;'+ res.updated_at.split('T')[0] +'&nbsp;by&nbsp;by you</div></div><form style="display: inline" action="/answers/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></div>').hide().insertAfter('#ansList').fadeIn(1000);
       },
       error: function(data) {
         $('#aerror').html(data.responseText)

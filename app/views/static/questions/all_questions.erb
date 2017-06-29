@@ -68,6 +68,9 @@
   </div>
 <% end %>
 
+<% if current_user %>
+<%= will_paginate @questions %>
+<% end %>
 
 <!-- Modal for login -->
 <div style="text-align: center;" class="modal fade" id="logModal" role="dialog"><div class="modal-dialog">

@@ -1,6 +1,3 @@
-enable :sessions
-set :session_secret, "My session secret"
-
 # create the question user asks
 post '/questions' do
   params[:question][:user_id] = current_user.id
