@@ -3,30 +3,21 @@
 <h3 style="text-align: center;">=== More Questions ? ===</h3>
 <p id="error" style="color: #f00"></p>
 
-<form id='ask_question' action="/questions" method="post">
-  <select id="selectTag" name="question[tag]">
-    <option>Choose category</option>
-    <option value="general">General</option>
-    <option value="science">Science</option>
-    <option value="coding">Coding</option>
-    <option value="coding">Others</option>
-  </select><br>
-  <input style="background-color: #dcdcdc" class="btn-block" type="text" name="question[subject]" placeholder="What is your question?" required>
-  <textarea style="background-color: #f5f5f5" class="btn-block" name='question[description]' form='ask_question' rows="5" placeholder="Type your description here"></textarea>
-  <input id="createQBtn" style="color: #aaa" type="submit" value="Ask" disabled="disabled">
-</form>
+
+<div class="panel panel-body" style="color: #aaa">
+<p><i class="fa fa-user w3-large"></i>&ensp;<%= current_user.first_name.upcase %></p>
+<h4><a style="color: #777" data-toggle="modal" data-target="#askModal"><b>What is your question?</b></a></h4>
+</div>
 
 <% if @questions.length == 0 %>
   <p id="noQmsg" style="text-align: center">You have no question yet.</p>
 <% else %>
   <% @questions.each do |q| %>
     <div class="panel panel-info">
-      <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-grey"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b><div style="text-align: right; font-size: 10px"><span class="badge"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %></div></div>
-      <div class="panel-body">
+      <div class="panel-body">Subject:&ensp;<a href="/questions/<%= q.id %>/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-grey"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b style="font-size: 20px"><%= q.subject %></b><div style="text-align: right; font-size: 10px"><span class="badge"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %></div></div>
       
-      <% if q.description.length == 0%>
-        <i style="color: #ccc">NO DESCRIPTION</i></div>
-      <% else %>
+      <% if q.description.length != 0%>
+        <div class="panel-body">
         <i style="color: #ccc">DESCRIPTION:</i><br><%= q.description %></div>
       <% end %>
       
@@ -39,3 +30,26 @@
   <% end %>
 <% end %>
 
+<!-- Modal for asking question -->
+<div style="text-align: center;" class="modal fade" id="askModal" role="dialog"><div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="color: #aaa"><%= current_user.first_name %> asks:</h4>
+      </div>
+      <div class="modal-body">
+        <form id='ask_question' action="/questions" method="post">
+          <select id="selectTag" name="question[tag]">
+            <option>Choose category</option>
+            <option value="general">General</option>
+            <option value="science">Science</option>
+            <option value="coding">Coding</option>
+            <option value="coding">Others</option>
+          </select><br>
+          <input style="background-color: #dcdcdc" class="btn-block" type="text" name="question[subject]" placeholder="What is your question?" required>
+          <textarea style="background-color: #f5f5f5" class="btn-block" name='question[description]' form='ask_question' rows="5" placeholder="Type your description here"></textarea>
+          <input id="createQBtn" style="color: #aaa" type="submit" value="Ask" disabled="disabled">
+        </form>
+      </div>
+</div></div></div>  

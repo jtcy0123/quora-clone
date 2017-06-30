@@ -25,14 +25,12 @@
     <% by = u.first_name.upcase  %>
   <% end %>
   <div class="panel panel-info">
-    <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b>
-    <div style="text-align: right; font-size: 10px"><span class="badge"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
-    <div class="panel-body">
+    <div class="panel-body"><i style="font-size: 10px; color: #aaa"><span class="badge" style="background-color: #aaa"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></i>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b style="font-size: 20px"><%= q.subject %></b><br>&emsp;
 
-    <% if q.description.length == 0%>
-      <i style="color: #ccc">NO DESCRIPTION</i></div>
+    <% if Answer.find_by_question_id(q.id) == nil %>
+      <i style="color: #ccc">"NO ANSWER"</i></div>
     <% else %>
-      <i style="color: #ccc">DESCRIPTION:</i><br><%= q.description %></div>
+      <i><b style="color: #777">"<%= Answer.find_by_question_id(q.id).content %>"</b></i></div>
     <% end %>
     
 <!-- Trigger the modal with a button -->
