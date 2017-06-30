@@ -173,8 +173,16 @@ $(document).ready(function() {
     }
   })
 
-  // confirm to delete
+  // confirm to delete question
   $('#deleteForm').on('submit', function(event) {
+    var c = confirm('Are you sure you want to delete this question?')
+    if (c != true) {
+      event.preventDefault();
+    }
+  })
+
+  // confirm to delete answer
+  $('#ansDform').on('submit', function(event) {
     var c = confirm('Are you sure you want to delete this question?')
     if (c != true) {
       event.preventDefault();

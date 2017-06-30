@@ -24,7 +24,7 @@
           <input id="hidden" type="hidden" name="_method" value="put">
           A:&nbsp;<p id="ans_cont"><%= a.content %></p></form><br> -->
 
-        <form style="float: right; margin: 0 -15px -15px 0" action='/answers/<%= a.id %>' method='post'>
+        <form id='ansDform' style="float: right; margin: 0 -15px -15px 0" action='/answers/<%= a.id %>' method='post'>
         <input id='hidden' type="hidden" name="_method" value="delete">
         <button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form>
       </div>
