@@ -4,7 +4,7 @@
 <% else %>
   <h3>QUESTIONS FROM ALL USERS</h3>
   <%= will_paginate @questions %>
-  <form style="text-align: right" action="/questions" method="get">
+  <form style="text-align: right; display: inline-block" action="/questions" method="get">
     <select id="selectTag" name="tag">
       <option>Choose category</option>
       <option value="general">General</option>
@@ -25,7 +25,7 @@
     <% by = u.first_name.upcase  %>
   <% end %>
   <div class="panel panel-info">
-    <div class="panel-body"><i style="font-size: 10px; color: #aaa"><span class="badge" style="background-color: #aaa"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></i>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b style="font-size: 20px"><%= q.subject %></b><br>&emsp;
+    <div class="panel-body" style="line-height: 30px"><i style="font-size: 10px; color: #aaa"><span class="badge" style="background-color: #aaa"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></i>&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b style="font-size: 20px"><%= q.subject %></b><br>&emsp;
 
     <% if Answer.find_by_question_id(q.id) == nil %>
       <i style="color: #ccc">"NO ANSWER"</i></div>

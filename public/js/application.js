@@ -31,7 +31,8 @@ $(document).ready(function() {
 
         $('#ask_question')[0].reset();
 
-        $('<div class="panel panel-info"><div class="panel-heading">Subject:&ensp;<a href="/questions/'+ res.id +'/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/'+ res.id +'/answers"><span class="badge w3-grey">0 answers</span></a><br><b>'+ res.subject +'</b><div style="text-align: right; font-size: 10px">created on&nbsp;'+ res.created_at.split('T')[0] +'</div></div><div class="panel-body"><i style="color: #ccc">DESCRIPTION:</i><br>'+ res.description +'</div><table><tr><td><form style="margin-bottom: -3px" action="/questions/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td><a href="/questions/'+ res.id +'/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table></div>').hide().insertAfter('#ask_question').fadeIn(1000);
+        $('<div class="panel panel-info"><div class="panel-body">Subject:&ensp;<a href="/questions/'+ res.id +'/edit"><i class="w3-small fa fa-pencil-square-o" aria-hidden="true">edit</i></a>&ensp;<a href="/questions/'+ res.id +'/answers"><span class="badge w3-grey">0 answers</span></a><br><b style="font-size: 20px">'+ res.subject +'</b><div style="text-align: right; font-size: 10px"><span class="badge">'+ res.tag +'</span>&nbsp;created on&nbsp;'+ res.created_at.split('T')[0] +'</div></div><table><tr><td><form id="deleteForm" style="margin-bottom: -3px" action="/questions/'+ res.id +'" method="post"><input id="hidden" type="hidden" name="_method" value="delete"><button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td><a href="/questions/'+ res.id +'/answers/new"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table></div>').hide().insertAfter('#newQ').fadeIn(1000);
+        $('#askModal').modal('hide');
       },
       error: function(data) {
         $('#error').html(data.responseText)
@@ -169,6 +170,14 @@ $(document).ready(function() {
     else {
       $('#createQBtn').removeAttr("style")
       $('#createQBtn').removeAttr('disabled')
+    }
+  })
+
+  // confirm to delete
+  $('#deleteForm').on('submit', function(event) {
+    var c = confirm('Are you sure you want to delete this question?')
+    if (c != true) {
+      event.preventDefault();
     }
   })
 

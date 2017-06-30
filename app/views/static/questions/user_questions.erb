@@ -9,6 +9,7 @@
 <h4><a style="color: #777" data-toggle="modal" data-target="#askModal"><b>What is your question?</b></a></h4>
 </div>
 
+<p id="newQ"></p>
 <% if @questions.length == 0 %>
   <p id="noQmsg" style="text-align: center">You have no question yet.</p>
 <% else %>
@@ -22,7 +23,7 @@
       <% end %>
       
       <table><tr><td>
-       <form style="margin-bottom: -3px" action='/questions/<%= q.id %>' method='post'>
+       <form id="deleteForm" style="margin-bottom: -3px" action='/questions/<%= q.id %>' method='post'>
        <input id='hidden' type="hidden" name="_method" value="delete">
       <button type="submit" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash"></i></button></form></td><td>
       <a href="/questions/<%= q.id %>/answers"><button id="ansBtn" class="btn btn-default"><i class="fa fa-pencil">Answer</i></button></a></td></tr></table>
