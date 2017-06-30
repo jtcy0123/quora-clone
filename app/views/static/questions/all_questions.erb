@@ -4,8 +4,18 @@
 <% else %>
   <h3>QUESTIONS FROM ALL USERS</h3>
   <%= will_paginate @questions %>
+  <form style="text-align: right" action="/questions" method="get">
+    <select id="selectTag" name="tag">
+      <option>Choose category</option>
+      <option value="general">General</option>
+      <option value="science">Science</option>
+      <option value="coding">Coding</option>
+      <option value="others">Others</option>
+    </select>
+    <input id="createQBtn" style="color: #aaa" type="submit" value="Filter" disabled="disabled">
+  </form>
+  <p><%= @tag %></p>
 <% end %>
-
 
 
 <% @questions.each do |q| %> <% u = User.find(q.user_id) %>
@@ -16,7 +26,7 @@
   <% end %>
   <div class="panel panel-info">
     <div class="panel-heading">Subject:&ensp;<a href="/questions/<%= q.id %>/answers"><span class="badge w3-white w3-border"><%= Answer.where(question_id: q.id).length %> answers</span></a><br><b><%= q.subject %></b>
-    <div style="text-align: right; font-size: 10px">created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
+    <div style="text-align: right; font-size: 10px"><span class="badge"><%= q.tag %></span>&nbsp;created on&nbsp;<%= q.created_at.strftime('%Y-%m-%d') %>&nbsp;by&nbsp;<%= by %></div></div>
     <div class="panel-body">
 
     <% if q.description.length == 0%>

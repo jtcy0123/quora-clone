@@ -30,7 +30,13 @@ get '/questions' do
   @downvotes = QuestionVote.group(:question_id).where(vote: -1).count
   if logged_in?
     # list of questions current user liked
-    @questions = Question.order('created_at desc').paginate(:page => params[:page], :per_page => 5)
+    if params[:tag] == nil
+      @tag = nil
+      @questions = Question.order('created_at desc').paginate(:page => params[:page], :per_page => 5)
+    else
+      @tag = params[:tag].upcase + ' QUESTIONS'
+      @questions = Question.where(tag: params[:tag]).paginate(:page => params[:page], :per_page => 5)
+    end
     @uplist = QuestionVote.where(user_id: current_user.id, vote: 1)
     @downlist = QuestionVote.where(user_id: current_user.id, vote: -1)
   else
