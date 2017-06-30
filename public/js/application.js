@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+
   // for header and content display
   var contentPlacement = $('#header').height() + 5;
   $('#content').css('margin-top',contentPlacement );
@@ -158,6 +159,17 @@ $(document).ready(function() {
         $('#errormsg').html('<div id="alert" class="alert alert-info"><strong>'+data.responseText+'</strong></div>')
       }
     })
+  })
+
+  $('#selectTag').on('change', function(){
+    if ($('#selectTag').val() == 'Choose category') {
+      $('#createQBtn').css("color", "#aaa")
+      $('#createQBtn').attr('disabled', true)
+    }
+    else {
+      $('#createQBtn').removeAttr("style")
+      $('#createQBtn').removeAttr('disabled')
+    }
   })
 
 })

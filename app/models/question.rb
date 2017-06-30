@@ -4,6 +4,7 @@ class Question < ActiveRecord::Base
   has_many :answers
 
   validates :subject, presence: true, length: { in: 3..90 }
+  validates :tag, presence: true
   # validates :description, presence: true
 
 end
