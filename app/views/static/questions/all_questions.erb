@@ -30,7 +30,7 @@
     <% if Answer.find_by_question_id(q.id) == nil %>
       <i style="color: #ccc">"NO ANSWER"</i></div>
     <% else %>
-      <i><b style="color: #777">"<%= Answer.find_by_question_id(q.id).content %>"</b></i></div>
+      <i><b style="color: #777" class="minimize">"<%= Answer.find_by_question_id(q.id).content %>"</b></i></div>
     <% end %>
     
 <!-- Trigger the modal with a button -->
